@@ -1,0 +1,188 @@
+{
+  "info": {
+    "_postman_id": "c322381e-2134-414d-aeb5-764f2c35d31a",
+    "name": "Automation Exercise API",
+    "description": "Manual/exploratory API testing companion to the automated pytest suite in this repo. Same target API (automationexercise.com), different testing approach: Postman here for request-by-request exploration with inline assertions, pytest for full automated regression runs.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57853726"
+  },
+  "item": [
+    {
+      "name": "Product List",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Every product has name, price, and brand together\", () => {",
+              "    const products = pm.response.json().products;",
+              "    products.forEach((product) => {",
+              "        pm.expect(product).to.have.property(\"name\");",
+              "        pm.expect(product).to.have.property(\"price\");",
+              "        pm.expect(product).to.have.property(\"brand\");",
+              "    });",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://automationexercise.com/api/productsList",
+          "protocol": "https",
+          "host": ["automationexercise", "com"],
+          "path": ["api", "productsList"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Brand List",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Every brand has an id and a name\", () => {",
+              "    const brands = pm.response.json().brands;",
+              "    pm.expect(brands).to.be.an(\"array\");",
+              "    pm.expect(brands.length).to.be.greaterThan(0);",
+              "    brands.forEach((brand) => {",
+              "        pm.expect(brand).to.have.property(\"id\");",
+              "        pm.expect(brand).to.have.property(\"brand\");",
+              "    });",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://automationexercise.com/api/brandsList",
+          "protocol": "https",
+          "host": ["automationexercise", "com"],
+          "path": ["api", "brandsList"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Search Products",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response code is 200\", () => {",
+              "    pm.expect(pm.response.json().responseCode).to.equal(200);",
+              "});",
+              "",
+              "pm.test(\"Returns at least one matching product\", () => {",
+              "    const products = pm.response.json().products;",
+              "    pm.expect(products).to.be.an(\"array\");",
+              "    pm.expect(products.length).to.be.greaterThan(0);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "search_product",
+              "value": "top",
+              "type": "text",
+              "uuid": "6b5d2afa-d759-4352-8c57-b43c32d958c2"
+            }
+          ]
+        },
+        "url": {
+          "raw": "https://automationexercise.com/api/searchProduct",
+          "protocol": "https",
+          "host": ["automationexercise", "com"],
+          "path": ["api", "searchProduct"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Verify Email",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Unregistered email correctly returns 404\", () => {",
+              "    pm.expect(pm.response.json().responseCode).to.equal(404);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "email",
+              "value": "test@test.com",
+              "type": "text",
+              "uuid": "6b5d2afa-d759-4352-8c57-b43c32d958c2"
+            },
+            {
+              "key": "password",
+              "value": "testpass123",
+              "type": "text",
+              "uuid": "92e12eff-ba01-46e6-b8fe-96da10baf383"
+            }
+          ]
+        },
+        "url": {
+          "raw": "https://automationexercise.com/api/verifyLogin",
+          "protocol": "https",
+          "host": ["automationexercise", "com"],
+          "path": ["api", "verifyLogin"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
